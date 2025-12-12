@@ -9,7 +9,7 @@
 25	6876	7872450731620557	CMakeFiles/solar_sys.dir/src/Planet.cpp.obj	5663eddee7e2858f
 36	7014	7872450731886639	CMakeFiles/solar_sys.dir/src/ProceduralPlanet.cpp.obj	c376f6f741a7a565
 63	2488	7872451150090974	CMakeFiles/solar_sys.dir/include/imgui/backends/imgui_impl_opengl3.cpp.obj	f7eeb33957cdf479
-17	1122	7872454569821254	CMakeFiles/solar_sys.dir/src/World.cpp.obj	fee14dc59f07e636
+16	1089	7872461742917833	CMakeFiles/solar_sys.dir/src/World.cpp.obj	fee14dc59f07e636
 58	2934	7872451150033537	CMakeFiles/solar_sys.dir/include/imgui/backends/imgui_impl_glfw.cpp.obj	aababb4cbaa78ee2
 42	3381	7872451149876860	CMakeFiles/solar_sys.dir/include/imgui/imgui_tables.cpp.obj	a4bc10822d2f59e4
 19	3585	7872451149638678	CMakeFiles/solar_sys.dir/src/SkyBox.cpp.obj	ea2ae14489bbfda2
@@ -17,4 +17,4 @@
 48	4617	7872451149983540	CMakeFiles/solar_sys.dir/include/imgui/imgui_widgets.cpp.obj	92451a6fa055d005
 32	5522	7872451149760186	CMakeFiles/solar_sys.dir/include/imgui/imgui.cpp.obj	a604a6893e945868
 17	775	7872451433552266	CMakeFiles/solar_sys.dir/src/main.cpp.obj	7f09453a79cb0a6e
-1123	1345	7872454580911332	C:/Users/etulyon1/Ferhat/code/CPP/openGL/solar_system/solar_sys.exe	e3da3cc522cfef5
+1090	1310	7872461753502319	C:/Users/etulyon1/Ferhat/code/CPP/openGL/solar_system/solar_sys.exe	e3da3cc522cfef5
