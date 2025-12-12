@@ -1,0 +1,20 @@
+# ninja log v7
+20	4425	7872450731620557	CMakeFiles/solar_sys.dir/src/MeshData.cpp.obj	647736680e22c7c2
+16	5627	7872450731620557	CMakeFiles/solar_sys.dir/src/Mesh.cpp.obj	ba295bf57931948f
+4	5860	7872450731463533	CMakeFiles/solar_sys.dir/include/glad.c.obj	a398fe2b76b0bd7c
+29	5953	7872450731801447	CMakeFiles/solar_sys.dir/src/Player.cpp.obj	77631d0ad74e7997
+8	6309	7872450731463533	CMakeFiles/solar_sys.dir/src/Camera.cpp.obj	f0e0c6072dc1b447
+44	6416	7872450731978224	CMakeFiles/solar_sys.dir/src/Shader.cpp.obj	f4f286708d0cfaf6
+12	6639	7872450731620557	CMakeFiles/solar_sys.dir/src/Material.cpp.obj	d054a4ad72f5b4a3
+25	6876	7872450731620557	CMakeFiles/solar_sys.dir/src/Planet.cpp.obj	5663eddee7e2858f
+36	7014	7872450731886639	CMakeFiles/solar_sys.dir/src/ProceduralPlanet.cpp.obj	c376f6f741a7a565
+63	2488	7872451150090974	CMakeFiles/solar_sys.dir/include/imgui/backends/imgui_impl_opengl3.cpp.obj	f7eeb33957cdf479
+17	1122	7872454569821254	CMakeFiles/solar_sys.dir/src/World.cpp.obj	fee14dc59f07e636
+58	2934	7872451150033537	CMakeFiles/solar_sys.dir/include/imgui/backends/imgui_impl_glfw.cpp.obj	aababb4cbaa78ee2
+42	3381	7872451149876860	CMakeFiles/solar_sys.dir/include/imgui/imgui_tables.cpp.obj	a4bc10822d2f59e4
+19	3585	7872451149638678	CMakeFiles/solar_sys.dir/src/SkyBox.cpp.obj	ea2ae14489bbfda2
+38	4455	7872451149826867	CMakeFiles/solar_sys.dir/include/imgui/imgui_draw.cpp.obj	de94c188db37789b
+48	4617	7872451149983540	CMakeFiles/solar_sys.dir/include/imgui/imgui_widgets.cpp.obj	92451a6fa055d005
+32	5522	7872451149760186	CMakeFiles/solar_sys.dir/include/imgui/imgui.cpp.obj	a604a6893e945868
+17	775	7872451433552266	CMakeFiles/solar_sys.dir/src/main.cpp.obj	7f09453a79cb0a6e
+1123	1345	7872454580911332	C:/Users/etulyon1/Ferhat/code/CPP/openGL/solar_system/solar_sys.exe	e3da3cc522cfef5
