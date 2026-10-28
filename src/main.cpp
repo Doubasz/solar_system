@@ -83,6 +83,7 @@ int main(){
 
     static bool lockMouse = true;
     static bool escapePressed = false;
+    static bool togglePressed = false;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
@@ -143,6 +144,15 @@ int main(){
             }
         } else {
             escapePressed = false;  // Reset when key is released
+        }
+
+        if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS){
+            if(!togglePressed){
+                w->toggleCameraMode();
+                togglePressed = true;
+            }
+        } else{
+            togglePressed = false;
         }
         
         // Get all pressed keys
@@ -228,8 +238,6 @@ std::vector<int> getInputs(GLFWwindow* window){
         inputs.push_back(4);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         inputs.push_back(5);
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-        inputs.push_back(6);
     
     return inputs;
 }

@@ -28,6 +28,7 @@ public:
     ~World();
 
     // Main loop methods
+    void toggleCameraMode();
     void handleInput(int input, glm::vec2 mousePos, float dt);
     void update(float deltaTime);
     void render(float dt);

@@ -40,6 +40,7 @@ World::World() {
     
 
     player = new Player(playerStartPos, 70.0f, glm::vec3(0.0f), 1.8f);
+    player->setPlanet(planet1);
 
     camera->attachToPlayer(player);
     camera->setMode(FREE_MODE);
@@ -101,8 +102,20 @@ void World::render(float dt){
 
 
 void World::update(float deltaTime){
+    if(camera->getMode() == PLAYER_MODE){
+        player->updatePhysics(deltaTime, camera->getYaw(), camera->getPitch());
+    }
+}
 
-    player->updatePhysics(deltaTime, camera->getYaw(), camera->getPitch());
+
+void World::toggleCameraMode(){
+    if(camera->getMode() == FREE_MODE){
+        player->setPosition(camera->getPosition());
+        player->setOnSurface(planet1);
+        camera->setMode(PLAYER_MODE);
+    } else{
+        camera->setMode(FREE_MODE);
+    }
 }
 
 
