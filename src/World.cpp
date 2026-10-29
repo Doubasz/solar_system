@@ -45,9 +45,7 @@ World::World() {
     camera->attachToPlayer(player);
     camera->setMode(FREE_MODE);
 
-    // Create shaders
-    planetShader = new Shader("shaders/vertex.glsl", 
-                                "shaders/planet.frag");
+
 
 }
 
