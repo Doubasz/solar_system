@@ -54,14 +54,14 @@ World::World() {
 
 
 
-void World::render(float dt){
+void World::render(float dt, float aspect){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // light sky blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 view = camera->getViewMatrix();
     glm::mat4 projection = glm::perspective(
         glm::radians(camera->fov),
-        1920.0f / 1080.0f,
+        aspect,
         0.1f,
         2000000.0f
     );

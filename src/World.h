@@ -31,7 +31,7 @@ public:
     void toggleCameraMode();
     void handleInput(int input, glm::vec2 mousePos, float dt);
     void update(float deltaTime);
-    void render(float dt);
+    void render(float dt, float aspect);
 
     // Accessors
     Camera* getCamera() const { return camera; }

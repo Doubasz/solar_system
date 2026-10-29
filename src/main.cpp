@@ -118,6 +118,15 @@ int main(){
 
 
     while(!glfwWindowShouldClose(window)){
+
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        if(display_w == 0 || display_h == 0){
+            glfwWaitEvents();
+            lastFrame = glfwGetTime();
+            continue;
+        }
+        float aspect = (float)display_w / (float)display_h;
+        window_pos = ImVec2(display_w - hud_padding, hud_padding);
         
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastFrame;
@@ -196,7 +205,7 @@ int main(){
         ImGui::Text("Frame: %.3f ms", 1000.0f / ImGui::GetIO().Framerate);
         ImGui::End();
 
-        w->render(deltaTime);
+        w->render(deltaTime, aspect);
 
         // Render ImGui
         ImGui::Render();
