@@ -84,6 +84,8 @@ int main(){
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);
 
+    glEnable(GL_FRAMEBUFFER_SRGB);
+
     static bool lockMouse = true;
     static bool escapePressed = false;
     static bool togglePressed = false;
