@@ -34,8 +34,6 @@ public:
 
     void draw();
 
-    MeshData constructPlanetMesh(float radius, int sectorCount, int stackCount, glm::vec3 color);
-    MeshData isoheadronSphereMesh(int resolution);
 };
 
 uint64_t pair_key(uint32_t a, uint32_t b);
