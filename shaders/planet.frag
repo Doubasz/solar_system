@@ -27,23 +27,29 @@ void main()
         vec3 N = normalize(vNormal);
         vec3 L = normalize(sunPos - vPosition); // light direction
         vec3 V = normalize(cameraPos - vPosition); // view direction
-        vec3 R = reflect(-L, N); // reflection for specular
+        //vec3 R = reflect(-L, N); // reflection for specular
+
+        vec3 light = sunColor * sunIntensity;
 
         // --- Diffuse ---
-        float diff = max(dot(N, L), 0.0);
-        vec3 diffuse = diff * sunColor * sunIntensity;
+        float NdotL = max(dot(N, L), 0.0);
+        vec3 diffuse = NdotL * light * planetColor;
 
         // --- Specular (Blinn-Phong) ---
-        float shininess = 8.0;
+        float shininess = 32.0;
+        float specularStrength = 0.25;
         vec3 H = normalize(L + V); // half vector
-        float spec = pow(max(dot(N, H), 0.0), shininess);
-        vec3 specular = spec * sunColor * sunIntensity;
+        float spec = (NdotL > 0.0) ? pow(max(dot(N, H), 0.0), shininess) : 0.0;
+        vec3 specular = specularStrength * spec * light;
 
-        vec3 ds = diffuse + specular;
+        float ambientStrength = 0.03;
+        vec3 ambient = ambientStrength * planetColor;
+
         //ds = vec3(1.0, 1.0, 1.0);
 
         // --- Combine ---
-        vec3 color = ds * planetColor;
+        vec3 color = ambient + diffuse + specular;
+        //color = pow(color, vec3(1.0/2.2));
 
         FragColor = vec4(color, 1.0);
     }
