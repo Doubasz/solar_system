@@ -1,0 +1,12 @@
+
+.vscode/
+/build/
+/build-*/
+/out/
+
+imgui.ini
+
+*.exe
+*.o
+*.obj
+Solar_System_example.png
