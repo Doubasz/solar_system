@@ -30,8 +30,10 @@ World::World() {
     planet1->material->set("sunPos", sun->position);
     planet1->material->set("sunColor", sunColor);
     planet1->material->set("sunIntensity", 2.0f);
-    planet1->material->set("planetColor", glm::vec3{0.0f, 0.5f, 1.0f});
-    planet1->material->set("sunRadius", 10.0f);
+    planet1->material->set("planetColor",  glm::vec3(0.6f, 0.25f, 0.12f));   // rust red
+    planet1->material->set("ambientColor", glm::vec3(0.11f, 0.016f, 0.027f)); // measured night side: 29, 4, 7
+    planet1->material->set("rimColor",     glm::vec3(1.0f, 0.55f, 0.25f));   // measured edge ratio 220 : 118 : 59
+    planet1->material->set("wrap", 0.5f);
     planet1->material->set("overrideColor", glm::vec3(0.0f));
 
 
