@@ -66,7 +66,6 @@ void World::render(float dt, float aspect){
         2000000.0f
     );
 
-    skybox->draw(view, projection, false);
 
 
     planetShader->use();
@@ -81,6 +80,7 @@ void World::render(float dt, float aspect){
     
     planet1->draw();
 
+    skybox->draw(view, projection, false);
 
     sunShader->use();
     sunShader->setMat4("view", view);
