@@ -1,30 +1,17 @@
 @echo off
-REM === Build and run the fluid simulation ===
 
-REM Go to the build directory (create it if missing)
-if not exist build (
-    mkdir build
-)
-cd build
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+if errorlevel 1 goto :fail
 
-REM Run CMake configuration
-cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+if errorlevel 1 goto :fail
 
-REM Build the project (Release mode by default)
-cmake --build . --config Release
+REM Shaders are loaded relative to the working directory, so run from build/
+pushd build
+solar_sys.exe
+popd
+exit /b 0
 
-if errorlevel 1 (
-    echo Build failed!
-    cd ..
-    exit /b 1
-)
-
-REM Go back to root
-cd ..
-
-REM Run the executable
-if exist solar_sys.exe (
-    solar_sys.exe
-) else (
-    echo Executable not found!
-)
+:fail
+echo Build failed!
+exit /b 1
