@@ -16,6 +16,9 @@ private:
     Shader* sunShader;
     Shader* planetShader;
 
+    Shader* glowShader;
+    Mesh* glowQuad;
+
     // Scene objects
     Planet* planet1;
     Planet* sun;

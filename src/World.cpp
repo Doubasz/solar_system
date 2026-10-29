@@ -15,9 +15,9 @@ World::World() {
     sun->position = glm::vec3(0.0, 0.0, -250.0f);
     sun->radius = 10.0f;
     //sun->material->set("sunColor", sunColor);
-    sun->material->set("coreColor", glm::vec3(1.0f, 0.98f, 0.75f));
-    sun->material->set("edgeColor", glm::vec3(1.0f, 0.75f, 0.05f));
-    sun->material->set("intensity", 2.5f);
+    sun->material->set("coreColor", glm::vec3(1.0f, 1.0f, 0.5f));
+    sun->material->set("edgeColor", glm::vec3(1.0f, 1.0f, 0.05f));
+    //sun->material->set("intensity", 2.5f);
 
     planetShader = new Shader("shaders/vertex.glsl", "shaders/planet.frag");
 
@@ -109,14 +109,14 @@ void World::render(float dt, float aspect){
 
     skybox->draw(view, projection, false);
 
-    const float glowScale = 4.0f;
+    const float glowScale = 3.0f;
     glowShader->use();
     glowShader->setMat4("view", view);
     glowShader->setMat4("projection", projection);
     glowShader->setVec3("center", sun->position);
     glowShader->setFloat("size", sun->radius * glowScale);
     glowShader->setFloat("glowScale", glowScale);
-    glowShader->setVec3("glowColor", glm::vec3(1.0f, 0.7f, 0.15f));
+    glowShader->setVec3("glowColor", glm::vec3(1.0f, 0.76f, 0.05f));
     glowShader->setFloat("intensity", 1.0f);
 
     glEnable(GL_BLEND);
