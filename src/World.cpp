@@ -12,10 +12,12 @@ World::World() {
     glm::vec3 sunColor = {1.0f, 0.75f, 0.2f};
     
     sun = new Planet(10.0f, {0.0f , 0.5f, 1.0f}, sunShader);
-    sun->position = glm::vec3(0.0, 0.0, -20.0f);
+    sun->position = glm::vec3(0.0, 0.0, -250.0f);
     sun->radius = 10.0f;
-    sun->material->set("sunColor", sunColor);
-    sun->material->set("intensity", 2.0f);
+    //sun->material->set("sunColor", sunColor);
+    sun->material->set("coreColor", glm::vec3(1.0f, 0.98f, 0.75f));
+    sun->material->set("edgeColor", glm::vec3(1.0f, 0.75f, 0.05f));
+    sun->material->set("intensity", 2.5f);
 
     planetShader = new Shader("shaders/vertex.glsl", "shaders/planet.frag");
 
@@ -45,7 +47,15 @@ World::World() {
     camera->attachToPlayer(player);
     camera->setMode(FREE_MODE);
 
+    glowShader = new Shader("shaders/glow.vert", "shaders/glow.frag");
 
+    std::vector<Vertex> quadVerts(4);              // value-initialised: all fields zero
+    quadVerts[0].position = {-1.0f, -1.0f, 0.0f};
+    quadVerts[1].position = { 1.0f, -1.0f, 0.0f};
+    quadVerts[2].position = { 1.0f,  1.0f, 0.0f};
+    quadVerts[3].position = {-1.0f,  1.0f, 0.0f};
+    std::vector<unsigned int> quadIdx = {0, 1, 2,  2, 3, 0};
+    glowQuad = new Mesh(quadVerts, quadIdx);
 
 }
 
@@ -82,7 +92,7 @@ void World::render(float dt, float aspect){
     
     planet1->draw();
 
-    skybox->draw(view, projection, false);
+
 
     sunShader->use();
     sunShader->setMat4("view", view);
@@ -94,14 +104,32 @@ void World::render(float dt, float aspect){
     sunShader->setMat3("normalMatrix",
         glm::transpose(glm::inverse(glm::mat3(planetModel))));
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // Additive blending
-    glDepthMask(GL_FALSE);
 
     sun->draw();
 
+    skybox->draw(view, projection, false);
+
+    const float glowScale = 4.0f;
+    glowShader->use();
+    glowShader->setMat4("view", view);
+    glowShader->setMat4("projection", projection);
+    glowShader->setVec3("center", sun->position);
+    glowShader->setFloat("size", sun->radius * glowScale);
+    glowShader->setFloat("glowScale", glowScale);
+    glowShader->setVec3("glowColor", glm::vec3(1.0f, 0.7f, 0.15f));
+    glowShader->setFloat("intensity", 1.0f);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);   // er darkens
+    glDepthMask(GL_FALSE);         // a glow must not hide things behind it
+    glDisable(GL_CULL_FACE);       //  its winding
+
+    glowQuad->draw();
+
+    glEnable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+
 }
 
 
