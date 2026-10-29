@@ -10,6 +10,7 @@ out vec3 vPosition;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat3 normalMatrix;
 
 void main()
 {
@@ -22,11 +23,9 @@ void main()
     vPosition = worldPos.xyz;
 
     // Transform normal to view space
-    mat3 normalMatrix = mat3(transpose(inverse(view * model)));
-    vViewSpaceNormal = normalize(normalMatrix * aNormal);
-    
-    // Keep original normal for reference
-    vNormal = aNormal;
+    vec3 worldNormal = normalize(normalMatrix * aNormal);
+    vNormal = worldNormal;
+    vViewSpaceNormal = mat3(view) * worldNormal;
     
     gl_Position = projection * view * worldPos;
 }

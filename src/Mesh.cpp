@@ -56,11 +56,11 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>&
 
     // Color
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     // Texture
     glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
-    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
 
     glBindVertexArray(0);
 }
@@ -103,41 +103,8 @@ Mesh::Mesh(const std::vector<float>& vertices, const std::vector<unsigned>& indi
 }
 
 
-Mesh::Mesh(const MeshData& meshData){
-    indexCount = meshData.indicesCount();
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, meshData.verticesCount() * sizeof(Vertex), meshData.vertices.data(), GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData.indicesCount() * sizeof(unsigned int), meshData.indices.data(), GL_STATIC_DRAW);
-
-    // Position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Normal
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-    glEnableVertexAttribArray(1);
-
-    // Color
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-    glEnableVertexAttribArray(2);
-
-    // Texture
-    glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
-    glEnableVertexAttribArray(3);
-
-    glBindVertexArray(0);
-}
+Mesh::Mesh(const MeshData& meshData)
+    : Mesh(meshData.vertices, meshData.indices) {}
 
 
 Mesh::~Mesh(){

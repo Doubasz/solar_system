@@ -8,10 +8,16 @@ if not exist build (
 cd build
 
 REM Run CMake configuration
-cmake ..
+cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
 
 REM Build the project (Release mode by default)
 cmake --build . --config Release
+
+if errorlevel 1 (
+    echo Build failed!
+    cd ..
+    exit /b 1
+)
 
 REM Go back to root
 cd ..

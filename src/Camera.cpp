@@ -33,8 +33,12 @@ void Camera::updateCameraVectors(){
 }
 
 void Camera::setMode(CameraMode newMode){
+    if(mode == PLAYER_MODE && newMode == FREE_MODE && attachedPlayer){
+        position = getPosition();
+    }
     mode = newMode;
     freeVelocity = glm::vec3(0.0f);
+    updateCameraVectors();
 }
 
 CameraMode Camera::getMode() const{

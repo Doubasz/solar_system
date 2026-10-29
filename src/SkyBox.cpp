@@ -27,6 +27,7 @@ SkyBox::~SkyBox(){
 
 void SkyBox::draw(const glm::mat4& cameraView, const glm::mat4& projection, bool img){
     glDepthFunc(GL_LEQUAL);
+    glDisable(GL_CULL_FACE);
 
     shader->use();
 
@@ -46,6 +47,7 @@ void SkyBox::draw(const glm::mat4& cameraView, const glm::mat4& projection, bool
     glBindVertexArray(0);
 
     glDepthFunc(GL_LESS);
+    glEnable(GL_CULL_FACE);
 }
 
 

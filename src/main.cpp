@@ -80,9 +80,15 @@ int main(){
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CW);
+
+    glEnable(GL_FRAMEBUFFER_SRGB);
 
     static bool lockMouse = true;
     static bool escapePressed = false;
+    static bool togglePressed = false;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
@@ -117,6 +123,15 @@ int main(){
 
 
     while(!glfwWindowShouldClose(window)){
+
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        if(display_w == 0 || display_h == 0){
+            glfwWaitEvents();
+            lastFrame = glfwGetTime();
+            continue;
+        }
+        float aspect = (float)display_w / (float)display_h;
+        window_pos = ImVec2(display_w - hud_padding, hud_padding);
         
         float currentTime = glfwGetTime();
         float deltaTime = currentTime - lastFrame;
@@ -143,6 +158,15 @@ int main(){
             }
         } else {
             escapePressed = false;  // Reset when key is released
+        }
+
+        if(glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS){
+            if(!togglePressed){
+                w->toggleCameraMode();
+                togglePressed = true;
+            }
+        } else{
+            togglePressed = false;
         }
         
         // Get all pressed keys
@@ -186,7 +210,7 @@ int main(){
         ImGui::Text("Frame: %.3f ms", 1000.0f / ImGui::GetIO().Framerate);
         ImGui::End();
 
-        w->render(deltaTime);
+        w->render(deltaTime, aspect);
 
         // Render ImGui
         ImGui::Render();
@@ -228,8 +252,6 @@ std::vector<int> getInputs(GLFWwindow* window){
         inputs.push_back(4);
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         inputs.push_back(5);
-    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
-        inputs.push_back(6);
     
     return inputs;
 }

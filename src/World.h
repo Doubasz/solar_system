@@ -5,6 +5,7 @@
 #include "SkyBox.h"
 #include "Planet.h"
 #include "Player.h"
+#include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
@@ -14,6 +15,9 @@ private:
     // Shaders
     Shader* sunShader;
     Shader* planetShader;
+
+    Shader* glowShader;
+    Mesh* glowQuad;
 
     // Scene objects
     Planet* planet1;
@@ -28,9 +32,10 @@ public:
     ~World();
 
     // Main loop methods
+    void toggleCameraMode();
     void handleInput(int input, glm::vec2 mousePos, float dt);
     void update(float deltaTime);
-    void render(float dt);
+    void render(float dt, float aspect);
 
     // Accessors
     Camera* getCamera() const { return camera; }

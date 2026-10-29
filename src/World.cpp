@@ -12,10 +12,12 @@ World::World() {
     glm::vec3 sunColor = {1.0f, 0.75f, 0.2f};
     
     sun = new Planet(10.0f, {0.0f , 0.5f, 1.0f}, sunShader);
-    sun->position = glm::vec3(0.0, 0.0, -20.0f);
+    sun->position = glm::vec3(0.0, 0.0, -250.0f);
     sun->radius = 10.0f;
-    sun->material->set("sunColor", sunColor);
-    sun->material->set("intensity", 2.0f);
+    //sun->material->set("sunColor", sunColor);
+    sun->material->set("coreColor", glm::vec3(1.0f, 1.0f, 0.5f));
+    sun->material->set("edgeColor", glm::vec3(1.0f, 1.0f, 0.05f));
+    //sun->material->set("intensity", 2.5f);
 
     planetShader = new Shader("shaders/vertex.glsl", "shaders/planet.frag");
 
@@ -28,8 +30,10 @@ World::World() {
     planet1->material->set("sunPos", sun->position);
     planet1->material->set("sunColor", sunColor);
     planet1->material->set("sunIntensity", 2.0f);
-    planet1->material->set("planetColor", glm::vec3{0.0f, 0.5f, 1.0f});
-    planet1->material->set("sunRadius", 10.0f);
+    planet1->material->set("planetColor",  glm::vec3(0.6f, 0.25f, 0.12f));   // rust red
+    planet1->material->set("ambientColor", glm::vec3(0.11f, 0.016f, 0.027f)); // measured night side: 29, 4, 7
+    planet1->material->set("rimColor",     glm::vec3(1.0f, 0.55f, 0.25f));   // measured edge ratio 220 : 118 : 59
+    planet1->material->set("wrap", 0.5f);
     planet1->material->set("overrideColor", glm::vec3(0.0f));
 
 
@@ -40,45 +44,56 @@ World::World() {
     
 
     player = new Player(playerStartPos, 70.0f, glm::vec3(0.0f), 1.8f);
+    player->setPlanet(planet1);
 
     camera->attachToPlayer(player);
     camera->setMode(FREE_MODE);
 
-    // Create shaders
-    planetShader = new Shader("shaders/vertex.glsl", 
-                                "shaders/planet.frag");
+    glowShader = new Shader("shaders/glow.vert", "shaders/glow.frag");
+
+    std::vector<Vertex> quadVerts(4);              // value-initialised: all fields zero
+    quadVerts[0].position = {-1.0f, -1.0f, 0.0f};
+    quadVerts[1].position = { 1.0f, -1.0f, 0.0f};
+    quadVerts[2].position = { 1.0f,  1.0f, 0.0f};
+    quadVerts[3].position = {-1.0f,  1.0f, 0.0f};
+    std::vector<unsigned int> quadIdx = {0, 1, 2,  2, 3, 0};
+    glowQuad = new Mesh(quadVerts, quadIdx);
 
 }
 
 
 
 
-void World::render(float dt){
+void World::render(float dt, float aspect){
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // light sky blue
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 view = camera->getViewMatrix();
     glm::mat4 projection = glm::perspective(
         glm::radians(camera->fov),
-        1920.0f / 1080.0f,
+        aspect,
         0.1f,
         2000000.0f
     );
 
-    skybox->draw(view, projection, false);
 
 
     planetShader->use();
     planetShader->setMat4("view", view);
     planetShader->setMat4("projection", projection);
+    planetShader->setVec3("cameraPos", camera->getPosition());
 
     glm::mat4 planetModel = glm::translate(glm::mat4(1.0), planet1->position);
     planetModel = glm::scale(planetModel, glm::vec3(planet1->radius));
+    //planetModel = glm::rotate(planetModel, (float)glfwGetTime(), glm::vec3(0, 1, 0));
     planetShader->setMat4("model", planetModel);
+    planetShader->setMat3("normalMatrix",
+        glm::transpose(glm::inverse(glm::mat3(planetModel))));
 
     glm::mat4 mvp = projection * view * planetModel;
     
     planet1->draw();
+
 
 
     sunShader->use();
@@ -88,21 +103,53 @@ void World::render(float dt){
     planetModel = glm::translate(glm::mat4(1.0), sun->position);
     planetModel = glm::scale(planetModel, glm::vec3(sun->radius));
     sunShader->setMat4("model", planetModel);
+    sunShader->setMat3("normalMatrix",
+        glm::transpose(glm::inverse(glm::mat3(planetModel))));
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // Additive blending
-    glDepthMask(GL_FALSE);
 
     sun->draw();
 
+    skybox->draw(view, projection, false);
+
+    const float glowScale = 3.0f;
+    glowShader->use();
+    glowShader->setMat4("view", view);
+    glowShader->setMat4("projection", projection);
+    glowShader->setVec3("center", sun->position);
+    glowShader->setFloat("size", sun->radius * glowScale);
+    glowShader->setFloat("glowScale", glowScale);
+    glowShader->setVec3("glowColor", glm::vec3(1.0f, 0.76f, 0.05f));
+    glowShader->setFloat("intensity", 1.0f);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);   // er darkens
+    glDepthMask(GL_FALSE);         // a glow must not hide things behind it
+    glDisable(GL_CULL_FACE);       //  its winding
+
+    glowQuad->draw();
+
+    glEnable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+
 }
 
 
 void World::update(float deltaTime){
+    if(camera->getMode() == PLAYER_MODE){
+        player->updatePhysics(deltaTime, camera->getYaw(), camera->getPitch());
+    }
+}
 
-    player->updatePhysics(deltaTime, camera->getYaw(), camera->getPitch());
+
+void World::toggleCameraMode(){
+    if(camera->getMode() == FREE_MODE){
+        player->setPosition(camera->getPosition());
+        player->setOnSurface(planet1);
+        camera->setMode(PLAYER_MODE);
+    } else{
+        camera->setMode(FREE_MODE);
+    }
 }
 
 
