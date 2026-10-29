@@ -69,10 +69,14 @@ void World::render(float dt, float aspect){
     planetShader->use();
     planetShader->setMat4("view", view);
     planetShader->setMat4("projection", projection);
+    planetShader->setVec3("cameraPos", camera->getPosition());
 
     glm::mat4 planetModel = glm::translate(glm::mat4(1.0), planet1->position);
     planetModel = glm::scale(planetModel, glm::vec3(planet1->radius));
+    //planetModel = glm::rotate(planetModel, (float)glfwGetTime(), glm::vec3(0, 1, 0));
     planetShader->setMat4("model", planetModel);
+    planetShader->setMat3("normalMatrix",
+        glm::transpose(glm::inverse(glm::mat3(planetModel))));
 
     glm::mat4 mvp = projection * view * planetModel;
     
@@ -87,6 +91,8 @@ void World::render(float dt, float aspect){
     planetModel = glm::translate(glm::mat4(1.0), sun->position);
     planetModel = glm::scale(planetModel, glm::vec3(sun->radius));
     sunShader->setMat4("model", planetModel);
+    sunShader->setMat3("normalMatrix",
+        glm::transpose(glm::inverse(glm::mat3(planetModel))));
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // Additive blending
